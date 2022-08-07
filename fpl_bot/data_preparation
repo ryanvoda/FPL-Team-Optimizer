@@ -1,0 +1,38 @@
+import numpy as np
+import pandas as pd
+import requests
+import bs4
+import urllib.request
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+from pprint import pprint
+
+# Scraping:
+url = 'https://fplform.com/fpl-predicted-points'
+r = requests.get(url)
+soup = BeautifulSoup(r.text, 'html.parser')
+player_data = pd.read_html(url)
+
+# INSTANTIATES VARIABLES FROM SCRAPED DATA:
+players = player_data[0].loc[:,"Player"]
+teams = player_data[0].loc[:,"Team"]
+positions = player_data[0].loc[:,"PosPosition"]
+prices = player_data[0].loc[:,"CostPlayer's current price"]
+ppnext6 = player_data[0].loc[:,"PPNext6"]
+ppall = player_data[0].loc[:,"PPRest OfSeasonPredicted FPL points for the rest of the season"]
+
+# CLEANS SCUFFED DATA THAT GOT SCRAPED INTO THE ENDS OF THE LISTS:
+chopped_ppnext6 = ppnext6.values[0:-1]
+chopped_prices = prices.values[0:-1]
+chopped_positions = positions.values[0:-1]
+chopped_players = players.values[0:-1]
+chopped_teams = teams.values[0:-1]
+chopped_ppall = ppall.values[0:-1]
+
+# CONVERTS TO PANDAS OBJECTS FOR select_team
+best_ppnext6 = pd.Series(chopped_ppnext6)
+best_prices = pd.Series(chopped_prices)
+best_positions = pd.Series(chopped_positions)
+best_players = pd.Series(chopped_players)
+best_teams = pd.Series(chopped_teams)
+best_ppall = pd.Series(chopped_ppall)
