@@ -1,1 +1,19 @@
+import base_model
+import data_preparation
 
+decisions, captain_decisions, sub_decisions = select_team(best_ppnext6, best_prices, best_positions, best_teams)
+player_indices = []
+
+print()
+print("First Team:")
+for i in range(len(decisions)):
+    if decisions[i].value() == 1:
+        print("{}{}".format(best_players[i], "*" if captain_decisions[i].value() == 1 else ""))
+        player_indices.append(i)
+        
+print()
+print("Subs:")
+for i in range(len(sub_decisions)):
+    if sub_decisions[i].value() == 1:
+        print(best_players[i])
+        player_indices.append(i)
